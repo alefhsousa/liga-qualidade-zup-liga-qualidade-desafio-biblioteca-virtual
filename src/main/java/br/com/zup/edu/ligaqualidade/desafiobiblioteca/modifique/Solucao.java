@@ -41,8 +41,8 @@ public class Solucao {
 		  	 emprestimos.forEach(dadosEmprestimo -> {
 		   		exemplares.forEach(dadosExemplar -> {
 		   			if ( dadosExemplar.idLivro == dadosEmprestimo.idLivro ) {
-						ValidadeUsuarioPadrao.process(usuarios,devolucoes,dataParaSerConsideradaNaExpiracao,empreestimosConcedidos,dadosEmprestimo,dadosExemplar);
-						ValidarUsuarioPesquisador.process(usuarios,dataParaSerConsideradaNaExpiracao,empreestimosConcedidos,dadosEmprestimo,dadosExemplar);
+						empreestimosConcedidos.addAll(ValidadeUsuarioPadrao.process(usuarios, dataParaSerConsideradaNaExpiracao,dadosEmprestimo,dadosExemplar));
+						empreestimosConcedidos.addAll(ValidarUsuarioPesquisador.process(usuarios,dataParaSerConsideradaNaExpiracao,dadosEmprestimo,dadosExemplar));
 					}
 				});
 		   });
