@@ -1,14 +1,14 @@
 package br.com.zup.edu.ligaqualidade.desafiobiblioteca.modifique;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import br.com.zup.edu.ligaqualidade.desafiobiblioteca.DadosDevolucao;
 import br.com.zup.edu.ligaqualidade.desafiobiblioteca.DadosEmprestimo;
 import br.com.zup.edu.ligaqualidade.desafiobiblioteca.EmprestimoConcedido;
-import br.com.zup.edu.ligaqualidade.desafiobiblioteca.pronto.DadosExemplar;
-import br.com.zup.edu.ligaqualidade.desafiobiblioteca.pronto.DadosLivro;
-import br.com.zup.edu.ligaqualidade.desafiobiblioteca.pronto.DadosUsuario;
+import br.com.zup.edu.ligaqualidade.desafiobiblioteca.pronto.*;
 
 public class Solucao {
 
@@ -35,8 +35,21 @@ public class Solucao {
 			Set<DadosExemplar> exemplares,
 			Set<DadosUsuario> usuarios, Set<DadosEmprestimo> emprestimos,
 			Set<DadosDevolucao> devolucoes, LocalDate dataParaSerConsideradaNaExpiracao) {
-		
-		return Set.of();
+
+
+			Set<EmprestimoConcedido> empreestimosConcedidos =  new HashSet<EmprestimoConcedido>();
+		  	 emprestimos.forEach(dadosEmprestimo -> {
+		   		exemplares.forEach(dadosExemplar -> {
+		   			if ( dadosExemplar.idLivro == dadosEmprestimo.idLivro ) {
+						ValidadeUsuarioPadrao.process(usuarios,devolucoes,dataParaSerConsideradaNaExpiracao,empreestimosConcedidos,dadosEmprestimo,dadosExemplar);
+						ValidarUsuarioPesquisador.process(usuarios,dataParaSerConsideradaNaExpiracao,empreestimosConcedidos,dadosEmprestimo,dadosExemplar);
+					}
+				});
+		   });
+
+
+		return  empreestimosConcedidos;
 	}
+
 
 }
