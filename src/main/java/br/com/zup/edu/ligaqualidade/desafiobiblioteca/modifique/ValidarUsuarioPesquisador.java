@@ -10,12 +10,17 @@ import java.util.Set;
 
 public class ValidarUsuarioPesquisador {
 
-    public  static Set<EmprestimoConcedido>  process(Set<DadosUsuario> usuarios, LocalDate dataParaSerConsideradaNaExpiracao, DadosEmprestimo dadosEmprestimo, DadosExemplar dadosExemplar) {
+    private BancoEmprestimos bancoEmprestimos;
+
+    public ValidarUsuarioPesquisador(BancoEmprestimos bancoEmprestimos) {
+        this.bancoEmprestimos = bancoEmprestimos;
+    }
+
+    public void process(Set<DadosUsuario> usuarios, LocalDate dataParaSerConsideradaNaExpiracao, DadosEmprestimo dadosEmprestimo, DadosExemplar dadosExemplar) {
         Set<EmprestimoConcedido> empreestimosConcedidos =  new HashSet<EmprestimoConcedido>();
 
         if (dadosEmprestimo.tempo <= 60 && usuarios.stream().anyMatch(dadosUsuario -> dadosUsuario.idUsuario == dadosEmprestimo.idUsuario && dadosUsuario.padrao == TipoUsuario.PESQUISADOR)) {
-            empreestimosConcedidos.add(new EmprestimoConcedido(dadosEmprestimo.idUsuario, dadosExemplar.idExemplar, dataParaSerConsideradaNaExpiracao.minusDays(1)));
+            bancoEmprestimos.adiciona(new EmprestimoConcedido(dadosEmprestimo.idUsuario, dadosExemplar.idExemplar, dataParaSerConsideradaNaExpiracao.minusDays(1)));
         }
-        return empreestimosConcedidos;
     }
 }

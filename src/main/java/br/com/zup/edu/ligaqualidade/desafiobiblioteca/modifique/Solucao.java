@@ -37,18 +37,20 @@ public class Solucao {
 			Set<DadosDevolucao> devolucoes, LocalDate dataParaSerConsideradaNaExpiracao) {
 
 
-			Set<EmprestimoConcedido> empreestimosConcedidos =  new HashSet<EmprestimoConcedido>();
+		BancoEmprestimos bancoEmprestimos = new BancoEmprestimos();
+
+		ValidadeUsuarioPadrao validadeUsuarioPadrao = new ValidadeUsuarioPadrao(bancoEmprestimos);
+		ValidarUsuarioPesquisador validadePesquisador = new ValidarUsuarioPesquisador(bancoEmprestimos);
 		  	 emprestimos.forEach(dadosEmprestimo -> {
 		   		exemplares.forEach(dadosExemplar -> {
 		   			if ( dadosExemplar.idLivro == dadosEmprestimo.idLivro ) {
-						empreestimosConcedidos.addAll(ValidadeUsuarioPadrao.process(usuarios, dataParaSerConsideradaNaExpiracao,dadosEmprestimo,dadosExemplar));
-						empreestimosConcedidos.addAll(ValidarUsuarioPesquisador.process(usuarios,dataParaSerConsideradaNaExpiracao,dadosEmprestimo,dadosExemplar));
+						validadeUsuarioPadrao.process(usuarios, dataParaSerConsideradaNaExpiracao,dadosEmprestimo,dadosExemplar);
+						validadePesquisador.process(usuarios,dataParaSerConsideradaNaExpiracao,dadosEmprestimo,dadosExemplar);
 					}
 				});
 		   });
 
-
-		return  empreestimosConcedidos;
+		return  bancoEmprestimos.getEmprestimoConcedidos();
 	}
 
 
